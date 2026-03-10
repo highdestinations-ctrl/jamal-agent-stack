@@ -3,9 +3,18 @@
   "version": "0.0.1",
   "type": "module",
   "private": true,
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "dependencies": {
+    "@jamal/shared-types": "workspace:*"
+  },
   "scripts": {
-    "dev": "echo 'Dev server not yet implemented'",
-    "build": "echo 'Build not yet implemented'",
+    "dev": "tsc --watch",
+    "build": "tsc",
     "typecheck": "tsc --noEmit"
   }
 }

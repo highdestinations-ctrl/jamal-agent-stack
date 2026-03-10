@@ -111,7 +111,7 @@ tradingguard-service worker
 
 Workers poll queue.
 
-## Milestone 10 — Policy Engine
+## Milestone 10 — Policy Engine ✅
 Introduce policy-service.
 
 Policy checks run before execution.

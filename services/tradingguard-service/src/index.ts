@@ -13,6 +13,7 @@ import {
 } from "@jamal/shared-types";
 import { TaskQueue, QueuedTaskRecord } from "@jamal/queue";
 import { PolicyService } from "@jamal/policy-service";
+import { SkillService } from "@jamal/skill-service";
 
 export interface WorkerConfig {
   pollIntervalMs?: number;
@@ -23,6 +24,7 @@ export class TradingGuardWorker {
   private descriptor: AgentDescriptor;
   private queue: TaskQueue;
   private policyService: PolicyService;
+  private skillService: SkillService;
   private isRunning: boolean = false;
   private pollInterval: number;
   private pollTimer?: NodeJS.Timeout;
@@ -31,11 +33,13 @@ export class TradingGuardWorker {
     descriptor: AgentDescriptor,
     queue: TaskQueue,
     policyService: PolicyService,
+    skillService: SkillService,
     config?: WorkerConfig
   ) {
     this.descriptor = descriptor;
     this.queue = queue;
     this.policyService = policyService;
+    this.skillService = skillService;
     this.pollInterval = config?.pollIntervalMs || 1000; // Default 1 second
   }
 
@@ -105,14 +109,21 @@ export class TradingGuardWorker {
         return;
       }
 
-      // Simulate task execution
+      // Execute task using skill service
+      const skillResult = await this.skillService.executeAuto(mockTask);
+
+      // Create assignment and report
       const assignment: SubagentAssignment = {
         subagentId: this.descriptor.id,
         taskId: queuedTask.taskId,
         assignedAt: new Date().toISOString(),
       };
 
-      const report = this.executeTask(assignment, `Task ${queuedTask.taskId} completed by TradingGuardWorker`);
+      const reportSummary = skillResult.success
+        ? `Task ${queuedTask.taskId} completed successfully`
+        : `Task ${queuedTask.taskId} failed: ${skillResult.error}`;
+
+      const report = this.executeTask(assignment, reportSummary);
       console.log(`Task ${queuedTask.taskId} completed with status: ${report.status}`);
     } catch (error) {
       console.error(`Error processing task ${queuedTask.taskId}:`, error);
@@ -155,8 +166,8 @@ export class TradingGuardService {
     return this.descriptor;
   }
 
-  createWorker(queue: TaskQueue, policyService: PolicyService, config?: WorkerConfig): TradingGuardWorker {
-    this.worker = new TradingGuardWorker(this.descriptor, queue, policyService, config);
+  createWorker(queue: TaskQueue, policyService: PolicyService, skillService: SkillService, config?: WorkerConfig): TradingGuardWorker {
+    this.worker = new TradingGuardWorker(this.descriptor, queue, policyService, skillService, config);
     return this.worker;
   }
 

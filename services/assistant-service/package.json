@@ -12,7 +12,8 @@
   "dependencies": {
     "@jamal/shared-types": "workspace:*",
     "@jamal/queue": "workspace:*",
-    "@jamal/policy-service": "workspace:*"
+    "@jamal/policy-service": "workspace:*",
+    "@jamal/skill-service": "workspace:*"
   },
   "scripts": {
     "dev": "tsc --watch",
