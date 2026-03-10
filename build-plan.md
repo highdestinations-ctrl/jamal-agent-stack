@@ -76,7 +76,7 @@ packages/db
 TaskRepository
 InMemoryTaskRepository
 
-## Milestone 7 — Queue Boundary
+## Milestone 7 — Queue Boundary ✅
 Create queue abstraction.
 
 packages/queue
