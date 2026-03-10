@@ -94,7 +94,7 @@ control-api
 
 to enqueue tasks instead of direct delegation.
 
-## Milestone 8 — HTTP Layer
+## Milestone 8 — HTTP Layer ✅
 Add minimal HTTP entrypoint.
 
 control-api server

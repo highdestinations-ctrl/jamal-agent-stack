@@ -1,17 +1,119 @@
 /**
  * @jamal/assistant-service
- * Assistant subagent service
+ * Assistant subagent service with worker runtime
  */
 
 import {
   AgentDescriptor,
+  AgentRole,
   SubagentAssignment,
   SubagentReport,
   TaskStatus,
 } from "@jamal/shared-types";
+import { TaskQueue, QueuedTaskRecord } from "@jamal/queue";
+
+export interface WorkerConfig {
+  pollIntervalMs?: number;
+  maxConcurrent?: number;
+}
+
+export class AssistantWorker {
+  private descriptor: AgentDescriptor;
+  private queue: TaskQueue;
+  private isRunning: boolean = false;
+  private pollInterval: number;
+  private pollTimer?: NodeJS.Timeout;
+
+  constructor(descriptor: AgentDescriptor, queue: TaskQueue, config?: WorkerConfig) {
+    this.descriptor = descriptor;
+    this.queue = queue;
+    this.pollInterval = config?.pollIntervalMs || 1000; // Default 1 second
+  }
+
+  getDescriptor(): AgentDescriptor {
+    return this.descriptor;
+  }
+
+  async start(): Promise<void> {
+    if (this.isRunning) {
+      throw new Error("Worker is already running");
+    }
+
+    this.isRunning = true;
+    console.log(`AssistantWorker started (poll interval: ${this.pollInterval}ms)`);
+
+    this.poll();
+  }
+
+  private poll = (): void => {
+    if (!this.isRunning) {
+      return;
+    }
+
+    this.consumeNextTask().catch((error) => {
+      console.error("Error consuming task:", error);
+    });
+
+    this.pollTimer = setTimeout(this.poll, this.pollInterval);
+  };
+
+  private async consumeNextTask(): Promise<void> {
+    try {
+      const queuedTask = await this.queue.consumeNext(AgentRole.ASSISTANT);
+
+      if (queuedTask) {
+        await this.processTask(queuedTask);
+      }
+    } catch (error) {
+      console.error("Error in consumeNextTask:", error);
+    }
+  }
+
+  private async processTask(queuedTask: QueuedTaskRecord): Promise<void> {
+    try {
+      console.log(`Processing task ${queuedTask.taskId}`);
+
+      // Simulate task execution
+      const assignment: SubagentAssignment = {
+        subagentId: this.descriptor.id,
+        taskId: queuedTask.taskId,
+        assignedAt: new Date().toISOString(),
+      };
+
+      const report = this.executeTask(assignment, `Task ${queuedTask.taskId} completed by AssistantWorker`);
+      console.log(`Task ${queuedTask.taskId} completed with status: ${report.status}`);
+    } catch (error) {
+      console.error(`Error processing task ${queuedTask.taskId}:`, error);
+    }
+  }
+
+  async stop(): Promise<void> {
+    if (!this.isRunning) {
+      return;
+    }
+
+    this.isRunning = false;
+    if (this.pollTimer) {
+      clearTimeout(this.pollTimer);
+    }
+
+    console.log("AssistantWorker stopped");
+  }
+
+  executeTask(assignment: SubagentAssignment, summary?: string): SubagentReport {
+    return {
+      subagentId: this.descriptor.id,
+      taskId: assignment.taskId,
+      status: TaskStatus.COMPLETED,
+      summary: summary || "Task completed",
+      reportedAt: new Date().toISOString(),
+    };
+  }
+}
 
 export class AssistantService {
   private descriptor: AgentDescriptor;
+  private worker?: AssistantWorker;
 
   constructor(descriptor: AgentDescriptor) {
     this.descriptor = descriptor;
@@ -19,6 +121,15 @@ export class AssistantService {
 
   getDescriptor(): AgentDescriptor {
     return this.descriptor;
+  }
+
+  createWorker(queue: TaskQueue, config?: WorkerConfig): AssistantWorker {
+    this.worker = new AssistantWorker(this.descriptor, queue, config);
+    return this.worker;
+  }
+
+  getWorker(): AssistantWorker | undefined {
+    return this.worker;
   }
 
   executeTask(

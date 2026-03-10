@@ -1,17 +1,119 @@
 /**
  * @jamal/tradingguard-service
- * Trading guard subagent service
+ * Trading guard subagent service with worker runtime
  */
 
 import {
   AgentDescriptor,
+  AgentRole,
   SubagentAssignment,
   SubagentReport,
   TaskStatus,
 } from "@jamal/shared-types";
+import { TaskQueue, QueuedTaskRecord } from "@jamal/queue";
+
+export interface WorkerConfig {
+  pollIntervalMs?: number;
+  maxConcurrent?: number;
+}
+
+export class TradingGuardWorker {
+  private descriptor: AgentDescriptor;
+  private queue: TaskQueue;
+  private isRunning: boolean = false;
+  private pollInterval: number;
+  private pollTimer?: NodeJS.Timeout;
+
+  constructor(descriptor: AgentDescriptor, queue: TaskQueue, config?: WorkerConfig) {
+    this.descriptor = descriptor;
+    this.queue = queue;
+    this.pollInterval = config?.pollIntervalMs || 1000; // Default 1 second
+  }
+
+  getDescriptor(): AgentDescriptor {
+    return this.descriptor;
+  }
+
+  async start(): Promise<void> {
+    if (this.isRunning) {
+      throw new Error("Worker is already running");
+    }
+
+    this.isRunning = true;
+    console.log(`TradingGuardWorker started (poll interval: ${this.pollInterval}ms)`);
+
+    this.poll();
+  }
+
+  private poll = (): void => {
+    if (!this.isRunning) {
+      return;
+    }
+
+    this.consumeNextTask().catch((error) => {
+      console.error("Error consuming task:", error);
+    });
+
+    this.pollTimer = setTimeout(this.poll, this.pollInterval);
+  };
+
+  private async consumeNextTask(): Promise<void> {
+    try {
+      const queuedTask = await this.queue.consumeNext(AgentRole.TRADING_GUARD);
+
+      if (queuedTask) {
+        await this.processTask(queuedTask);
+      }
+    } catch (error) {
+      console.error("Error in consumeNextTask:", error);
+    }
+  }
+
+  private async processTask(queuedTask: QueuedTaskRecord): Promise<void> {
+    try {
+      console.log(`Processing task ${queuedTask.taskId}`);
+
+      // Simulate task execution
+      const assignment: SubagentAssignment = {
+        subagentId: this.descriptor.id,
+        taskId: queuedTask.taskId,
+        assignedAt: new Date().toISOString(),
+      };
+
+      const report = this.executeTask(assignment, `Task ${queuedTask.taskId} completed by TradingGuardWorker`);
+      console.log(`Task ${queuedTask.taskId} completed with status: ${report.status}`);
+    } catch (error) {
+      console.error(`Error processing task ${queuedTask.taskId}:`, error);
+    }
+  }
+
+  async stop(): Promise<void> {
+    if (!this.isRunning) {
+      return;
+    }
+
+    this.isRunning = false;
+    if (this.pollTimer) {
+      clearTimeout(this.pollTimer);
+    }
+
+    console.log("TradingGuardWorker stopped");
+  }
+
+  executeTask(assignment: SubagentAssignment, summary?: string): SubagentReport {
+    return {
+      subagentId: this.descriptor.id,
+      taskId: assignment.taskId,
+      status: TaskStatus.COMPLETED,
+      summary: summary || "Trade guard check completed",
+      reportedAt: new Date().toISOString(),
+    };
+  }
+}
 
 export class TradingGuardService {
   private descriptor: AgentDescriptor;
+  private worker?: TradingGuardWorker;
 
   constructor(descriptor: AgentDescriptor) {
     this.descriptor = descriptor;
@@ -19,6 +121,15 @@ export class TradingGuardService {
 
   getDescriptor(): AgentDescriptor {
     return this.descriptor;
+  }
+
+  createWorker(queue: TaskQueue, config?: WorkerConfig): TradingGuardWorker {
+    this.worker = new TradingGuardWorker(this.descriptor, queue, config);
+    return this.worker;
+  }
+
+  getWorker(): TradingGuardWorker | undefined {
+    return this.worker;
   }
 
   executeTask(

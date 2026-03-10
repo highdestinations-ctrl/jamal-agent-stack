@@ -10,7 +10,8 @@
     }
   },
   "dependencies": {
-    "@jamal/shared-types": "workspace:*"
+    "@jamal/shared-types": "workspace:*",
+    "@jamal/queue": "workspace:*"
   },
   "scripts": {
     "dev": "tsc --watch",
