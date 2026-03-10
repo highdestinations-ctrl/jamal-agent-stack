@@ -103,7 +103,7 @@ POST /tasks
 
 creates tasks and enqueues them.
 
-## Milestone 9 — Worker Runtime
+## Milestone 9 — Worker Runtime ✅
 Create worker loops.
 
 assistant-service worker

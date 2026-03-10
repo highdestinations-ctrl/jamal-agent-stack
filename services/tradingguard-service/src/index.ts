@@ -9,8 +9,10 @@ import {
   SubagentAssignment,
   SubagentReport,
   TaskStatus,
+  TaskEnvelope,
 } from "@jamal/shared-types";
 import { TaskQueue, QueuedTaskRecord } from "@jamal/queue";
+import { PolicyService } from "@jamal/policy-service";
 
 export interface WorkerConfig {
   pollIntervalMs?: number;
@@ -20,13 +22,20 @@ export interface WorkerConfig {
 export class TradingGuardWorker {
   private descriptor: AgentDescriptor;
   private queue: TaskQueue;
+  private policyService: PolicyService;
   private isRunning: boolean = false;
   private pollInterval: number;
   private pollTimer?: NodeJS.Timeout;
 
-  constructor(descriptor: AgentDescriptor, queue: TaskQueue, config?: WorkerConfig) {
+  constructor(
+    descriptor: AgentDescriptor,
+    queue: TaskQueue,
+    policyService: PolicyService,
+    config?: WorkerConfig
+  ) {
     this.descriptor = descriptor;
     this.queue = queue;
+    this.policyService = policyService;
     this.pollInterval = config?.pollIntervalMs || 1000; // Default 1 second
   }
 
@@ -72,6 +81,29 @@ export class TradingGuardWorker {
   private async processTask(queuedTask: QueuedTaskRecord): Promise<void> {
     try {
       console.log(`Processing task ${queuedTask.taskId}`);
+
+      // Check policy before execution
+      const mockTask: TaskEnvelope = {
+        id: queuedTask.taskId,
+        type: "trade" as any,
+        status: TaskStatus.PENDING,
+        priority: "MEDIUM" as any,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        payload: { taskId: queuedTask.taskId },
+      };
+
+      const policyResult = await this.policyService.checkPolicy(
+        mockTask,
+        queuedTask.targetSubagentRole
+      );
+
+      if (!policyResult.allowed) {
+        console.log(
+          `Task ${queuedTask.taskId} blocked by policy: ${policyResult.reason}`
+        );
+        return;
+      }
 
       // Simulate task execution
       const assignment: SubagentAssignment = {
@@ -123,8 +155,8 @@ export class TradingGuardService {
     return this.descriptor;
   }
 
-  createWorker(queue: TaskQueue, config?: WorkerConfig): TradingGuardWorker {
-    this.worker = new TradingGuardWorker(this.descriptor, queue, config);
+  createWorker(queue: TaskQueue, policyService: PolicyService, config?: WorkerConfig): TradingGuardWorker {
+    this.worker = new TradingGuardWorker(this.descriptor, queue, policyService, config);
     return this.worker;
   }
 
