@@ -1,0 +1,25 @@
+{
+  "name": "@jamal/control-api",
+  "version": "0.0.1",
+  "type": "module",
+  "private": true,
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "dependencies": {
+    "@jamal/orchestrator": "workspace:*",
+    "@jamal/shared-types": "workspace:*",
+    "@jamal/assistant-service": "workspace:*",
+    "@jamal/tradingguard-service": "workspace:*",
+    "@jamal/db": "workspace:*",
+    "@jamal/queue": "workspace:*"
+  },
+  "scripts": {
+    "dev": "tsc --watch",
+    "build": "tsc",
+    "typecheck": "tsc --noEmit"
+  }
+}

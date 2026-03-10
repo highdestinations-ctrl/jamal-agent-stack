@@ -1,0 +1,11 @@
+{
+  "name": "@jamal/skill-service",
+  "version": "0.0.1",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "echo 'Dev server not yet implemented'",
+    "build": "echo 'Build not yet implemented'",
+    "typecheck": "tsc --noEmit"
+  }
+}
