@@ -1,9 +1,10 @@
 /**
  * @jamal/skill-service
- * Skill system for task execution
+ * Skill system for task execution with LLM routing
  */
 
 import { AgentDescriptor, TaskEnvelope, SubagentReport, TaskStatus } from "@jamal/shared-types";
+import { LLMRouter } from "@jamal/llm-router";
 
 export interface SkillResult {
   success: boolean;
@@ -105,11 +106,13 @@ export class SkillService {
   private descriptor: AgentDescriptor;
   private registry: SkillRegistry;
   private runtime: SkillRuntime;
+  private llmRouter: LLMRouter;
 
   constructor(descriptor: AgentDescriptor) {
     this.descriptor = descriptor;
     this.registry = new SkillRegistry();
     this.runtime = new SkillRuntime(this.registry);
+    this.llmRouter = new LLMRouter();
     this.registerDefaultSkills();
   }
 
@@ -160,11 +163,25 @@ export class SkillService {
     return this.runtime;
   }
 
+  getLLMRouter(): LLMRouter {
+    return this.llmRouter;
+  }
+
   async executeSkill(skillId: string, task: TaskEnvelope): Promise<SkillResult> {
+    // Route the task to select the appropriate model
+    const route = this.llmRouter.routeTask(task);
+    console.log(
+      `Skill ${skillId} will use model: ${route.modelId} (${route.size})`
+    );
     return this.runtime.execute(skillId, task);
   }
 
   async executeAuto(task: TaskEnvelope): Promise<SkillResult> {
+    // Route the task to select the appropriate model
+    const route = this.llmRouter.routeTask(task);
+    console.log(
+      `Auto-selected model: ${route.modelId} (${route.size}) for task complexity`
+    );
     return this.runtime.executeAuto(task);
   }
 }

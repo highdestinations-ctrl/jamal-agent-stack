@@ -10,7 +10,8 @@
     }
   },
   "dependencies": {
-    "@jamal/shared-types": "workspace:*"
+    "@jamal/shared-types": "workspace:*",
+    "@jamal/llm-router": "workspace:*"
   },
   "scripts": {
     "dev": "tsc --watch",

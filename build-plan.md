@@ -116,7 +116,7 @@ Introduce policy-service.
 
 Policy checks run before execution.
 
-## Milestone 11 — Skill System
+## Milestone 11 — Skill System ✅
 Introduce skill-service.
 
 Skills registry
