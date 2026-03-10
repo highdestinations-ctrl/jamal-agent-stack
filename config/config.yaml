@@ -1,0 +1,232 @@
+# Jamal Agent Stack Configuration
+# Integrated advanced AI skills for autonomous agent orchestration
+
+jamal:
+  version: "1.0.0"
+  name: "Jamal Agent Stack"
+  description: "Multi-skill orchestration platform"
+
+# Enable/disable skills
+skills:
+  planning_with_files:
+    enabled: true
+    path: "../skills/planning-with-files"
+    description: "Persistent planning context & session recovery"
+    features:
+      - persistent_context
+      - session_recovery
+      - auto_catchup
+      - multiple_projects
+  
+  superpowers:
+    enabled: true
+    path: "../skills/superpowers"
+    description: "SWE lifecycle automation & subagent-driven development"
+    features:
+      - brainstorming
+      - spec_design
+      - implementation_planning
+      - subagent_dispatch
+      - code_review
+  
+  awesome_subagents:
+    enabled: true
+    path: "../skills/awesome-claude-code-subagents"
+    description: "140+ specialized subagents for different domains"
+    features:
+      - language_specialists
+      - framework_experts
+      - infra_devops
+      - database_specialists
+      - meta_orchestration
+  
+  prompt_generator:
+    enabled: true
+    path: "../skills/skill-prompt-generator"
+    description: "AI prompt engineering system"
+    features:
+      - portrait_generation
+      - cross_domain_generation
+      - design_generation
+      - element_database
+  
+  ui_ux_pro_max:
+    enabled: true
+    path: "../skills/ui-ux-pro-max-skill"
+    description: "Enterprise design system"
+    features:
+      - component_library
+      - design_tokens
+      - theme_system
+  
+  skillx:
+    enabled: true
+    path: "../skills/skillx"
+    description: "Modern skill framework"
+    features:
+      - monorepo_support
+      - app_integration
+      - package_management
+
+# Orchestrator configuration
+orchestrator:
+  planning:
+    base_path: "./.planning"
+    auto_recovery: true
+    context_retention_days: 30
+    max_concurrent_tasks: 10
+  
+  dispatch:
+    parallel_execution: true
+    max_parallel_agents: 5
+    task_timeout_seconds: 3600
+    retry_failed_tasks: true
+    retry_max_attempts: 3
+  
+  workflow_stages:
+    - planning
+    - requirement_clarification
+    - spec_design
+    - implementation_planning
+    - subagent_dispatch
+    - execution
+    - review
+    - deployment
+
+# Subagent categories & their specialties
+subagents:
+  language_specialists:
+    - voltagent-lang-python
+    - voltagent-lang-javascript
+    - voltagent-lang-typescript
+    - voltagent-lang-go
+    - voltagent-lang-rust
+    - voltagent-lang-java
+  
+  framework_experts:
+    - voltagent-framework-react
+    - voltagent-framework-nextjs
+    - voltagent-framework-fastapi
+    - voltagent-framework-django
+    - voltagent-framework-express
+  
+  infrastructure:
+    - voltagent-infra-kubernetes
+    - voltagent-infra-docker
+    - voltagent-infra-terraform
+    - voltagent-infra-aws
+    - voltagent-infra-gcp
+  
+  database:
+    - voltagent-db-postgresql
+    - voltagent-db-mongodb
+    - voltagent-db-redis
+    - voltagent-db-mysql
+
+# Prompt generation configuration
+prompt_generation:
+  domains:
+    - portrait        # Photography
+    - design          # Graphic design
+    - interior        # Space design
+    - product         # Product photography
+    - art             # Artistic styles
+    - video           # Video generation
+    - common          # Common techniques
+    - cross_domain    # Multi-domain combinations
+  
+  element_database_size: 1246
+  
+  generation_modes:
+    - portrait
+    - cross_domain
+    - design
+
+# Design system configuration
+design_system:
+  theme: "default"
+  tokens:
+    colors:
+      primary: "#007AFF"
+      secondary: "#5AC8FA"
+      success: "#34C759"
+      warning: "#FF9500"
+      error: "#FF3B30"
+    
+    typography:
+      font_family: "Inter, sans-serif"
+      base_size: "16px"
+      scale: 1.125
+  
+  component_library: "ui-ux-pro-max"
+  component_framework: "skillx"
+
+# Logging configuration
+logging:
+  level: "info"
+  format: "json"
+  output: ".logs"
+  retention_days: 7
+  include_timestamps: true
+
+# Integration points
+integrations:
+  planning_x_orchestrator:
+    description: "Planning context feeds orchestrator task planning"
+    mapping:
+      planning_files: ".planning/{task_id}/"
+      orchestrator_tasks: "orchestrator/planning/"
+  
+  superpowers_x_subagents:
+    description: "Superpowers dispatches to specialized subagents"
+    mapping:
+      planning_phase: "superpowers.spec"
+      execution_phase: "superpowers.execute"
+  
+  prompt_gen_x_design:
+    description: "Prompt generation drives design system"
+    mapping:
+      design_specs: "config/prompts/"
+      component_mapping: "ui-ux-pro-max"
+  
+  orchestrator_x_all:
+    description: "Orchestrator coordinates all skills"
+    mapping:
+      task_routing: "orchestrator/task/"
+      execution_tracking: "orchestrator/deployment/"
+
+# Example workflow definitions
+workflows:
+  python_cli_tool:
+    type: "build"
+    skills_required:
+      - planning_with_files
+      - superpowers
+      - awesome_subagents
+    primary_subagent: "voltagent-lang-python"
+    estimated_duration_minutes: 60
+  
+  react_component:
+    type: "build"
+    skills_required:
+      - prompt_generator
+      - superpowers
+      - awesome_subagents
+    primary_subagent: "voltagent-framework-react"
+    estimated_duration_minutes: 45
+  
+  infrastructure_deployment:
+    type: "deploy"
+    skills_required:
+      - superpowers
+      - awesome_subagents
+    primary_subagent: "voltagent-infra-kubernetes"
+    estimated_duration_minutes: 90
+  
+  design_system_update:
+    type: "design"
+    skills_required:
+      - prompt_generator
+      - ui_ux_pro_max
+      - skillx
+    estimated_duration_minutes: 30

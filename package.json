@@ -1,0 +1,37 @@
+{
+  "name": "jamal-agent-stack",
+  "version": "1.0.0",
+  "description": "Integrated advanced AI skills for autonomous agent orchestration",
+  "type": "module",
+  "main": "orchestrator/orchestrator.js",
+  "scripts": {
+    "start": "node orchestrator/orchestrator.js",
+    "test": "echo 'Tests pending'",
+    "init": "node scripts/init.js",
+    "list-skills": "node scripts/list-skills.js",
+    "list-workflows": "node scripts/list-workflows.js"
+  },
+  "keywords": [
+    "agent",
+    "orchestration",
+    "ai",
+    "planning",
+    "superpowers",
+    "subagents",
+    "prompt-generation",
+    "design-system"
+  ],
+  "author": "Jamal Team",
+  "license": "MIT",
+  "dependencies": {
+    "yaml": "^2.3.0"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/jamal-agent-stack.git"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
