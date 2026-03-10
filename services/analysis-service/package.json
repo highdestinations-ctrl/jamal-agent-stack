@@ -1,0 +1,23 @@
+{
+  "name": "@jamal/analysis-service",
+  "version": "1.0.0",
+  "description": "Weekly analysis engine for pattern recognition, drift detection, and opportunity detection",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "echo 'Tests pending'"
+  },
+  "dependencies": {
+    "@jamal/domain-tracker": "workspace:*",
+    "@jamal/memory-service": "workspace:*",
+    "@langchain/core": "^0.1.41",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.3.3"
+  }
+}

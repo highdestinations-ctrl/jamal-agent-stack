@@ -79,5 +79,36 @@ export declare class CanvasUIManager {
     render(componentId: string): string;
     renderDashboard(): string;
 }
+/**
+ * Feedback UI Component
+ */
+export declare class FeedbackPanel implements UIComponent {
+    id: string;
+    type: string;
+    private sessionId;
+    constructor(sessionId: string);
+    render(): string;
+}
+/**
+ * Weekly Analysis Display Component
+ */
+export declare class WeeklyAnalysisDisplay implements UIComponent {
+    id: string;
+    type: string;
+    private analysis;
+    constructor(analysis?: any);
+    render(): string;
+    private renderBalanceItem;
+}
+/**
+ * Daily Summary Card Component
+ */
+export declare class DailySummaryCard implements UIComponent {
+    id: string;
+    type: string;
+    private summary;
+    constructor(summary?: any);
+    render(): string;
+}
 export { PersonalAssistantSupervisor, MemoryService };
 //# sourceMappingURL=index.d.ts.map

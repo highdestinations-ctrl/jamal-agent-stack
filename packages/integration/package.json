@@ -8,12 +8,16 @@
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",
-    "test": "echo 'Integration tests pending'",
+    "test": "node dist/test-full.js",
+    "test:full": "node dist/test-full.js",
     "test:memory": "node dist/test-memory.js",
     "test:supervisor": "node dist/test-supervisor.js"
   },
   "dependencies": {
+    "@jamal/analysis-service": "workspace:*",
     "@jamal/canvas-ui": "workspace:*",
+    "@jamal/domain-tracker": "workspace:*",
+    "@jamal/feedback-service": "workspace:*",
     "@jamal/memory-service": "workspace:*",
     "@jamal/supervisor": "workspace:*"
   },

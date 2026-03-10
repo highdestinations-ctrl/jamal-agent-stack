@@ -6,8 +6,8 @@
  * 2. Session Memory (24h): conversation history with summaries
  * 3. Long-term Memory (vector + structured): semantic recall
  */
-import { WorkingMemory, SessionMemory, LongTermMemory, SupervisorState, MemoryQueryOptions } from "./types";
-export * from "./types";
+import { WorkingMemory, SessionMemory, LongTermMemory, SupervisorState, MemoryQueryOptions } from "./types.js";
+export * from "./types.js";
 /**
  * MemoryService: unified interface for all memory layers
  */

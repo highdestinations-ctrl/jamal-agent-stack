@@ -14,9 +14,9 @@ import {
   LongTermMemory,
   SupervisorState,
   MemoryQueryOptions,
-} from "./types";
+} from "./types.js";
 
-export * from "./types";
+export * from "./types.js";
 
 /**
  * MemoryService: unified interface for all memory layers

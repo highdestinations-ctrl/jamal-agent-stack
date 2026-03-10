@@ -7,7 +7,7 @@
  * 3. Long-term Memory (vector + structured): semantic recall
  */
 import { Pool } from "pg";
-export * from "./types";
+export * from "./types.js";
 /**
  * MemoryService: unified interface for all memory layers
  */

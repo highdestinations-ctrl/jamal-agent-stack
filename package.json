@@ -6,7 +6,8 @@
   "main": "orchestrator/orchestrator.js",
   "scripts": {
     "start": "node orchestrator/orchestrator.js",
-    "test": "echo 'Tests pending'",
+    "test": "pnpm --filter @jamal/integration test:full",
+    "test:phase1": "pnpm --filter @jamal/integration test:full",
     "init": "node scripts/init.js",
     "list-skills": "node scripts/list-skills.js",
     "list-workflows": "node scripts/list-workflows.js",
