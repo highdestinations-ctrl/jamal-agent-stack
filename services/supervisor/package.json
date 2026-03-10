@@ -1,0 +1,26 @@
+{
+  "name": "@jamal/supervisor",
+  "version": "1.0.0",
+  "description": "LangGraph-based personal assistant supervisor for task routing and orchestration",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist", "src"],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "echo 'Tests pending'"
+  },
+  "dependencies": {
+    "@jamal/memory-service": "workspace:*",
+    "@langchain/core": "^0.1.41",
+    "@langchain/langgraph": "^0.0.18",
+    "uuid": "^9.0.1",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/uuid": "^9.0.0",
+    "typescript": "^5.3.3"
+  }
+}

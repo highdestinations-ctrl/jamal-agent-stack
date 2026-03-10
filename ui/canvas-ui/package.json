@@ -1,0 +1,24 @@
+{
+  "name": "@jamal/canvas-ui",
+  "version": "1.0.0",
+  "description": "OpenClaw Canvas UI components for personal assistant",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist", "src"],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "echo 'Tests pending'"
+  },
+  "dependencies": {
+    "@jamal/memory-service": "workspace:*",
+    "@jamal/supervisor": "workspace:*",
+    "@langchain/core": "^0.1.41",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.3.3"
+  }
+}

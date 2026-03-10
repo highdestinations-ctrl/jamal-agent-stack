@@ -1,0 +1,24 @@
+{
+  "name": "@jamal/memory-service",
+  "version": "1.0.0",
+  "description": "3-tier memory system for personal assistant: working, session, and long-term memory",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist", "src"],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "echo 'Tests pending'"
+  },
+  "dependencies": {
+    "@langchain/core": "^0.1.41",
+    "pg": "^8.11.3",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/pg": "^8.11.0",
+    "typescript": "^5.3.3"
+  }
+}

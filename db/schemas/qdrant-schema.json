@@ -1,0 +1,74 @@
+{
+  "collections": {
+    "long_term_memory": {
+      "name": "long_term_memory",
+      "description": "Semantic vector store for long-term memory and knowledge recall",
+      "vector_size": 1536,
+      "distance": "Cosine",
+      "payload_schema": {
+        "session_id": "text",
+        "content": "text",
+        "content_type": "text",
+        "category": "keyword",
+        "created_at": "datetime",
+        "expires_at": "datetime",
+        "importance_score": "float",
+        "metadata": "object",
+        "tags": "array",
+        "source": "text"
+      },
+      "hnsw_config": {
+        "m": 16,
+        "ef_construct": 100,
+        "ef_search": 100,
+        "max_neighbors": 200
+      },
+      "quantization": {
+        "scalar": {
+          "type": "int8",
+          "quantile": 0.99,
+          "always_ram": true
+        }
+      }
+    },
+    "session_embeddings": {
+      "name": "session_embeddings",
+      "description": "Session-specific embeddings for quick recall within 24h",
+      "vector_size": 1536,
+      "distance": "Cosine",
+      "payload_schema": {
+        "session_id": "text",
+        "turn_number": "integer",
+        "message": "text",
+        "message_type": "keyword",
+        "created_at": "datetime",
+        "user_intent": "text"
+      },
+      "hnsw_config": {
+        "m": 8,
+        "ef_construct": 50,
+        "ef_search": 50
+      }
+    },
+    "task_context": {
+      "name": "task_context",
+      "description": "Task-specific embeddings for working memory",
+      "vector_size": 1536,
+      "distance": "Cosine",
+      "payload_schema": {
+        "task_id": "text",
+        "session_id": "text",
+        "task_type": "keyword",
+        "status": "keyword",
+        "context": "text",
+        "created_at": "datetime",
+        "ttl_hours": "integer"
+      },
+      "hnsw_config": {
+        "m": 8,
+        "ef_construct": 50,
+        "ef_search": 50
+      }
+    }
+  }
+}

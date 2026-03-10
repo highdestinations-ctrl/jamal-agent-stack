@@ -1,7 +1,7 @@
 {
   "name": "jamal-agent-stack",
   "version": "1.0.0",
-  "description": "Integrated advanced AI skills for autonomous agent orchestration",
+  "description": "Integrated advanced AI skills for autonomous agent orchestration with memory & personal assistant",
   "type": "module",
   "main": "orchestrator/orchestrator.js",
   "scripts": {
@@ -9,7 +9,9 @@
     "test": "echo 'Tests pending'",
     "init": "node scripts/init.js",
     "list-skills": "node scripts/list-skills.js",
-    "list-workflows": "node scripts/list-workflows.js"
+    "list-workflows": "node scripts/list-workflows.js",
+    "build": "pnpm -r build",
+    "dev": "pnpm -r dev"
   },
   "keywords": [
     "agent",
@@ -19,19 +21,32 @@
     "superpowers",
     "subagents",
     "prompt-generation",
-    "design-system"
+    "design-system",
+    "memory",
+    "personal-assistant",
+    "langgraph"
   ],
   "author": "Jamal Team",
   "license": "MIT",
   "dependencies": {
-    "yaml": "^2.3.0"
+    "@langchain/core": "^0.1.41",
+    "@langchain/langgraph": "^0.0.18",
+    "@types/node": "^20.0.0",
+    "pg": "^8.11.3",
+    "postgres": "^3.4.3",
+    "yaml": "^2.3.0",
+    "zod": "^3.22.4"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "typescript": "^5.3.3",
+    "tsx": "^4.7.0"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/yourusername/jamal-agent-stack.git"
   },
   "engines": {
-    "node": ">=20.0.0"
+    "node": ">=20.0.0",
+    "pnpm": ">=8.0.0"
   }
 }
