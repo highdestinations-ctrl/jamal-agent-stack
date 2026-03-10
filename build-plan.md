@@ -122,7 +122,7 @@ Introduce skill-service.
 Skills registry
 skill runtime
 
-## Milestone 12 — LLM Router
+## Milestone 12 — LLM Router ✅
 Implement model routing.
 
 small models for classification
