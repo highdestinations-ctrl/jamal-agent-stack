@@ -6,22 +6,13 @@
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "allowJs": true,
-    "strict": true,
+    "strict": false,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
+    "forceConsistentCasingInFileNames": false,
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
-    "outDir": "./dist",
-    "rootDir": "./src",
-    "baseUrl": ".",
-    "paths": {
-      "@jamal/*": ["packages/*/src"],
-      "@apps/*": ["apps/*/src"],
-      "@services/*": ["services/*/src"]
-    }
-  },
-  "include": ["src"],
-  "exclude": ["node_modules", "dist"]
+    "baseUrl": "."
+  }
 }

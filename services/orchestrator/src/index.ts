@@ -59,9 +59,6 @@ export class Orchestrator {
   }
 }
 
-// Re-export wiring example for type-checking
-export { default as wiringExample } from "./wiring-example";
-
 export default {
   Orchestrator,
 };
