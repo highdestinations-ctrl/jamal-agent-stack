@@ -1,53 +1,28 @@
 {
   "name": "jamal-agent-stack",
-  "version": "1.0.0",
-  "description": "Integrated advanced AI skills for autonomous agent orchestration with memory & personal assistant",
+  "version": "0.0.1",
+  "description": "Production-minded multi-service agent stack",
+  "private": true,
   "type": "module",
-  "main": "orchestrator/orchestrator.js",
-  "scripts": {
-    "start": "node orchestrator/orchestrator.js",
-    "test": "pnpm --filter @jamal/integration test:full",
-    "test:phase1": "pnpm --filter @jamal/integration test:full",
-    "init": "node scripts/init.js",
-    "list-skills": "node scripts/list-skills.js",
-    "list-workflows": "node scripts/list-workflows.js",
-    "build": "pnpm -r build",
-    "dev": "pnpm -r dev"
+  "engines": {
+    "node": ">=22.12.0",
+    "pnpm": ">=9.0.0"
   },
-  "keywords": [
-    "agent",
-    "orchestration",
-    "ai",
-    "planning",
-    "superpowers",
-    "subagents",
-    "prompt-generation",
-    "design-system",
-    "memory",
-    "personal-assistant",
-    "langgraph"
+  "workspaces": [
+    "apps/*",
+    "services/*",
+    "packages/*"
   ],
-  "author": "Jamal Team",
-  "license": "MIT",
-  "dependencies": {
-    "@langchain/core": "^0.1.41",
-    "@langchain/langgraph": "^0.0.18",
-    "@types/node": "^20.0.0",
-    "pg": "^8.11.3",
-    "postgres": "^3.4.3",
-    "yaml": "^2.3.0",
-    "zod": "^3.22.4"
+  "scripts": {
+    "build": "pnpm -r build",
+    "dev": "pnpm -r --parallel dev",
+    "test": "pnpm -r test",
+    "lint": "pnpm -r lint",
+    "format": "pnpm -r format",
+    "typecheck": "pnpm -r typecheck",
+    "demo": "tsx scripts/demo.ts"
   },
   "devDependencies": {
-    "typescript": "^5.3.3",
     "tsx": "^4.7.0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/yourusername/jamal-agent-stack.git"
-  },
-  "engines": {
-    "node": ">=20.0.0",
-    "pnpm": ">=8.0.0"
   }
 }

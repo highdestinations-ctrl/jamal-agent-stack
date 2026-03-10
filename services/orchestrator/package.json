@@ -1,0 +1,23 @@
+{
+  "name": "@jamal/orchestrator",
+  "version": "0.0.1",
+  "type": "module",
+  "private": true,
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "dependencies": {
+    "@jamal/shared-types": "workspace:*",
+    "@jamal/assistant-service": "workspace:*",
+    "@jamal/tradingguard-service": "workspace:*",
+    "@jamal/queue": "workspace:*"
+  },
+  "scripts": {
+    "dev": "tsc --watch",
+    "build": "tsc",
+    "typecheck": "tsc --noEmit"
+  }
+}
